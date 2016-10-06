@@ -1,0 +1,11 @@
+<script data-baseUrl="{{baseUrl}}" src="{{jsUrl}}/require.js"></script>
+<script src="{{jsUrl}}/jquery-1.9.1.min.js"></script>
+
+<h1>Space Battle</h1>
+
+<a href="/game?id={{rand}}">Create Game</a>
+
+{{#each games}}
+<p>{{this.name}}</p>
+{{/each}}
+

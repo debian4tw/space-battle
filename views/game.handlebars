@@ -1,0 +1,83 @@
+<div class="header-container">
+<div id="header">
+    <div style="float:left">
+        <h3>
+          SpaceBattle
+        </h3>
+    </div>
+
+    <div class="metrics">
+        <div>
+          Latency: <span id="latency"></span>
+        </div>
+        <div>
+          FPS: <span id="fps"></span>  
+        </div>
+    </div>
+<br style="clear:both" />
+</div>
+</div>
+<div class="container">
+<canvas id="canvas" width="800" height="550" style="background:#000">
+</canvas>
+</div>
+
+<script src="{{jsUrl}}/jquery-1.9.1.min.js"></script>
+
+<script>
+var config = {
+  server : "{{baseUrl}}"
+};
+window.requestAnimFrame = (function(){
+  return  window.requestAnimationFrame       ||
+          window.webkitRequestAnimationFrame ||
+          window.mozRequestAnimationFrame    ||
+          window.oRequestAnimationFrame      ||
+          window.msRequestAnimationFrame     ||
+          function(/* function */ callback, /* DOMElement */ element){
+            window.setTimeout(callback, 1000 / 60);
+          };
+})();
+</script>
+<script data-main="javascripts/main" data-baseUrl="{{baseUrl}}" src="{{jsUrl}}/require.js"></script>
+
+
+<script>
+/*
+$(document).ready(function(){
+  	
+  	var socket = io.connect('{{baseUrl}}');
+  	var game = new SpaceBattle(socket);
+  	window.addEventListener('keydown', 
+  		function(e){
+  				game.keyPressed(e);
+  				//socket.emit('moved', { direction: 'e' });
+  		}, true);
+
+  	window.addEventListener('keyup', function(e){game.keyUp(e)}, true);
+
+  	//game.draw();
+  	console.log(game);
+  	setInterval(function(){game.draw()},50);
+
+  	
+  	socket.on('moved', function (data) {
+    	console.log(data);
+    	if(data.direction == 'right'){
+    		game.ship2.moveX(game.ship2.speed);
+    	} else {
+    		game.ship2.moveX(-game.ship2.speed);
+    	}
+    	//socket.emit('my other event', { my: 'AAASSssDDD' });
+  	});
+  	socket.on('fired',function(data){
+  		game.ship2.fire();
+  	});
+});
+*/
+</script>
+
+
+
+
+
