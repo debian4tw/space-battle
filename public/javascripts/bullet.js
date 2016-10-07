@@ -1,4 +1,4 @@
-
+var GameOpts = require('./game_opts');
 //Constructor
 var Bullet = function(x,y,color){
 
@@ -74,10 +74,7 @@ Bullet.prototype.draw = function(ctx){
 };
 
 Bullet.prototype.getState = function(){
-		var GameOpts = {
-    	screenW : 800,
-    	screenH : 600
-    };
+
 	if (this.state == 1) {
 		if (this.getY() < GameOpts.screenH && this.getY() > 0) {
 			this.moveY(this.speed);

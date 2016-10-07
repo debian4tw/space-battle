@@ -7243,7 +7243,7 @@ function toArray(list, index) {
 }
 
 },{}],49:[function(require,module,exports){
-
+var GameOpts = require('./game_opts');
 //Constructor
 var Barrier = function(x,y,color,reverseOrientation){
 
@@ -7290,10 +7290,7 @@ var Barrier = function(x,y,color,reverseOrientation){
 };
 
 Barrier.prototype.moveX = function(x){
-		var GameOpts = {
-	screenW : 800,
-	screenH : 600
-	};
+
 	if ( (x<0 && this.rectangle.x+x < 0 ) || 
 		 (x>0 && this.rectangle.x+this.rectangle.w+x > GameOpts.screenW ) ){
 		return;
@@ -7360,8 +7357,8 @@ Barrier.prototype.setState = function(data){
 
 module.exports = Barrier;
 
-},{}],50:[function(require,module,exports){
-
+},{"./game_opts":53}],50:[function(require,module,exports){
+var GameOpts = require('./game_opts');
 //Constructor
 var Bonus = function(x,y,color){
 
@@ -7378,10 +7375,7 @@ var Bonus = function(x,y,color){
 };
 
 Bonus.prototype.moveX = function(x){
-		var GameOpts = {
-    screenW : 800,
-    screenH : 600
-    };
+
 	if ( (x<0 && this.rectangle.x+x < 0 ) || 
 		 (x>0 && this.rectangle.x+this.rectangle.w+x > GameOpts.screenW ) ){
 		return;
@@ -7442,8 +7436,8 @@ Bonus.prototype.setState = function(data){
 module.exports = Bonus;
 
 
-},{}],51:[function(require,module,exports){
-
+},{"./game_opts":53}],51:[function(require,module,exports){
+var GameOpts = require('./game_opts');
 //Constructor
 var Bullet = function(x,y,color){
 
@@ -7519,10 +7513,7 @@ Bullet.prototype.draw = function(ctx){
 };
 
 Bullet.prototype.getState = function(){
-		var GameOpts = {
-    	screenW : 800,
-    	screenH : 600
-    };
+
 	if (this.state == 1) {
 		if (this.getY() < GameOpts.screenH && this.getY() > 0) {
 			this.moveY(this.speed);
@@ -7547,8 +7538,8 @@ Bullet.prototype.setState = function(data){
 module.exports = Bullet;
 
 
-},{}],52:[function(require,module,exports){
-	
+},{"./game_opts":53}],52:[function(require,module,exports){
+var GameOpts = require('./game_opts');	
 //Constructor
 var Fleet = function(x,y,color){
 
@@ -7580,10 +7571,7 @@ var Fleet = function(x,y,color){
 };
 
 Fleet.prototype.moveX = function(x){
-		var GameOpts = {
-	screenW : 800,
-	screenH : 600
-	};
+
 	/*
 	if ( (x<0 && this.rectangle.x+x < 0 ) || 
 		 (x>0 && this.rectangle.x+this.rectangle.w+x > GameOpts.screenW ) ){
@@ -7706,7 +7694,14 @@ Fleet.prototype.setState = function(data){
 
 module.exports = Fleet;
 
-},{}],53:[function(require,module,exports){
+},{"./game_opts":53}],53:[function(require,module,exports){
+var GameOpts = {
+    screenW : 800,
+    screenH : 600
+};
+
+module.exports = GameOpts;
+},{}],54:[function(require,module,exports){
 var SpaceBattle = require('./space_battle');
 var io = require('socket.io-client');
 
@@ -7809,7 +7804,8 @@ var io = require('socket.io-client');
 		game.getState();
 	});*/
 
-},{"./space_battle":55,"socket.io-client":2}],54:[function(require,module,exports){
+},{"./space_battle":56,"socket.io-client":2}],55:[function(require,module,exports){
+var GameOpts = require('./game_opts');
 
 var Ship = function(x,y,color){
 
@@ -7821,10 +7817,7 @@ var Ship = function(x,y,color){
 };
 
 Ship.prototype.moveX = function(x){
-		var GameOpts = {
-    screenW : 800,
-    screenH : 600
-    };
+
 	if ( (x<0 && this.rectangle.x+x < 0 ) || 
 		 (x>0 && this.rectangle.x+this.rectangle.w+x > GameOpts.screenW ) ){
 		return;
@@ -7885,8 +7878,8 @@ Ship.prototype.setState = function(data) {
 module.exports = Ship;
 
 
-},{}],55:[function(require,module,exports){
-
+},{"./game_opts":53}],56:[function(require,module,exports){
+var GameOpts = require('./game_opts');
 var Ship = require('./ship');
 var Bullet = require('./bullet');
 var Fleet = require('./fleet');
@@ -7896,14 +7889,10 @@ var Bonus = require('./bonus');
 
 var SpaceBattle = function(sock){
 
-    var GameOpts = {
-    screenW : 800,
-    screenH : 600
-    };
-    
-    if(typeof window !== 'undefined'){
-        this.owOgg = new Audio("/sounds/shot.ogg");
-    }
+    this.KEYCODE_LEFT = 37,
+    this.KEYCODE_RIGHT = 39,
+    this.KEYCODE_UP = 38,
+    this.KEYCODE_DOWN = 40; 
 
     this.lastMessage = 0;
     this.commands = {};
@@ -7911,42 +7900,114 @@ var SpaceBattle = function(sock){
 
     this.socket = sock;
     this.actors = [];
+    this.collisions = [];
 
     this.ship1 = new Ship(370,10,'#0BFFF5');
     this.ship2 = new Ship(370,500,'pink');
-    this.actors.push(this.ship1);
-    this.actors.push(this.ship2);
 
     this.b1 = new Bullet(-10,-10,'grey');
     this.b2 = new Bullet(-10,-10,'grey');
     this.b2.orientation = 1;
-    this.actors.push(this.b1);
-    this.actors.push(this.b2);
 
     this.ship1.asignBullet(this.b1);
     this.ship2.asignBullet(this.b2);
 
     this.fleet = new Fleet(240,200,'#AF90FF');
-    this.actors.push(this.fleet);
+
     this.b3 = new Bullet(-10,-10,'#AF90FF');
     this.b3.speed = 15;
     this.fleet.asignBullet(this.b3);
-    this.actors.push(this.b3);
 
     this.bar1 = new Barrier(150, 70, '#35FFCF');
-    this.actors.push(this.bar1);
     this.bar2 = new Barrier(150, 430, '#35FFCF',true);
-    this.actors.push(this.bar2);
-
 
     this.bonus = new Bonus(10,140,'red');
     //this.actors.push(this.bonus);
 
+    this.actors.push(this.ship1);
+    this.actors.push(this.ship2);
+    this.actors.push(this.b1);
+    this.actors.push(this.b2);
+    this.actors.push(this.fleet);
+    this.actors.push(this.b3);
+    this.actors.push(this.bar1);    
+    this.actors.push(this.bar2);
 
-    this.KEYCODE_LEFT = 37,
-    this.KEYCODE_RIGHT = 39,
-    this.KEYCODE_UP = 38,
-    this.KEYCODE_DOWN = 40;   
+
+    console.log(this.bar2.rectangle.constructor === Array);
+
+    if(typeof window !== 'undefined'){
+        this.owOgg = new Audio("/sounds/shot.ogg");
+    }
+
+    var that = this;
+
+    this.registerCollision(this.b1, this.ship2, function(){
+        that.b1.reset();
+        that.ship2.rectangle.x=0;
+    });
+
+    this.registerCollision(this.b1, this.fleet, function(i){
+        that.fleet.active[i] = 0;
+        that.fleet.aliveShips--;
+        that.b1.reset();
+    });
+
+    this.registerCollision(this.b1, this.bar1, function(i){
+        that.bar1.active[i] = 0;
+        that.b1.reset();
+    });
+
+    this.registerCollision(this.b1, this.bar2, function(i){
+        that.bar2.active[i] = 0;
+        that.b1.reset();
+    });    
+
+
+    this.registerCollision(this.b2, this.ship1, function(){
+        that.b2.reset();
+        that.ship1.rectangle.x=0;
+    });
+
+    this.registerCollision(this.b2, this.fleet, function(i){
+        that.fleet.active[i] = 0;
+        that.fleet.aliveShips--;
+        that.b2.reset();
+    });    
+
+    this.registerCollision(this.b2, this.bar1, function(i){
+        that.bar1.active[i] = 0;
+        that.b2.reset();
+    });
+
+    this.registerCollision(this.b2, this.bar2, function(i){
+        that.bar2.active[i] = 0;
+        that.b2.reset();
+    });
+
+
+    this.registerCollision(this.b3, this.ship1, function(){
+        that.b3.reset();
+        that.ship1.rectangle.x=0;
+            //sb.addToLife1(-1);
+    });
+    this.registerCollision(this.b3, this.ship2, function(){
+        that.b3.reset();
+        that.ship2.rectangle.x=0;
+        //sb.addToLife2(-1);
+    });
+    this.registerCollision(this.b3, this.bar2, function(i){
+        that.bar2.active[i] = 0;
+        that.b3.reset();
+    });
+    this.registerCollision(this.b3, this.bar1, function(i){
+        that.bar1.active[i] = 0;
+        that.b3.reset();
+    });
+
+
+
+  
 };
 
 
@@ -8172,26 +8233,53 @@ SpaceBattle.prototype.check_collision = function(A,B) {
 };
 
 
-SpaceBattle.prototype.handleCollisions = function(){
+SpaceBattle.prototype.registerCollision = function(a, b, cb){
+    var self = this;
+    this.collisions.push(function(){
 
+        if(a.state != 1){
+            return;
+        }
+
+        if(b.rectangle.constructor === Array){
+            for (i=0,j=b.rectangle.length; i<j; i++) {
+                if (b.active[i] == 1 && self.check_collision(a.rectangle,b.rectangle[i])) {
+                    cb(i);
+                }
+            }
+        }else{
+            if(self.check_collision(a.rectangle,b.rectangle)) {
+                cb();
+            }
+        } 
+    });
+
+}
+
+SpaceBattle.prototype.handleCollisions = function(){
+//console.log(this.collisions.length);    
+    for(i=0; i<  this.collisions.length; i++){
+        //console.log(this.collisions[i].toString());
+        this.collisions[i]();
+    }
     if (this.b2.state == 1) {
 
-        if (this.check_collision(this.ship1.rectangle,this.b2.rectangle)) {
+        /*if (this.check_collision(this.ship1.rectangle,this.b2.rectangle)) {
             this.b2.reset();
             this.ship1.rectangle.x=0;
             //sb.addToLife1(-1);
-        }
+        }*/
 
 
-        for (i=0; i<this.fleet.qty; i++) {
+        /*for (i=0; i<this.fleet.qty; i++) {
             if (this.fleet.active[i] == 1 && this.check_collision(this.b2.rectangle,this.fleet.rectangle[i])) {
                     this.fleet.active[i] = 0;
                     this.fleet.aliveShips--;
                     this.b2.reset();
             }
-        }
+        }*/
         
-        for (i=0; i<this.bar1.qty; i++) {
+        /*for (i=0; i<this.bar1.qty; i++) {
             if (this.bar1.active[i] == 1 && this.check_collision(this.b2.rectangle,this.bar1.rectangle[i])) {
                     this.bar1.active[i] = 0;
                     this.b2.reset();
@@ -8202,7 +8290,7 @@ SpaceBattle.prototype.handleCollisions = function(){
                     this.bar2.active[i] = 0;
                     this.b2.reset();
             }
-        }
+        }*/
         /*
         if (check_collision(bonus.rectangle,this.b2.rectangle)) {
             this.b2.reset();
@@ -8213,22 +8301,23 @@ SpaceBattle.prototype.handleCollisions = function(){
 
 
     if (this.b1.state == 1) {
-        if (this.check_collision(this.ship2.rectangle,this.b1.rectangle)) {
+        /*if (this.check_collision(this.ship2.rectangle,this.b1.rectangle)) {
             this.b1.reset();
             this.ship2.rectangle.x=0;
             //sb.addToLife2(-1);
             //sb.addToScore1(400);
-        }
-        for (i=0; i<this.fleet.qty; i++) {
+        }*/
+        
+        /*for (i=0; i<this.fleet.qty; i++) {
             if (this.fleet.active[i] == 1 && this.check_collision(this.b1.rectangle,this.fleet.rectangle[i])) {
                     this.fleet.active[i] = 0;
                     this.fleet.aliveShips--;
                     this.b1.reset();
                     //sb.addToScore1(100);
             }
-        }
+        }*/
         
-        for (i=0; i<this.bar1.qty; i++) {
+       /* for (i=0; i<this.bar1.qty; i++) {
             if (this.bar1.active[i] == 1 && this.check_collision(this.b1.rectangle,this.bar1.rectangle[i])) {
                     this.bar1.active[i] = 0;
                     this.b1.reset();
@@ -8239,7 +8328,7 @@ SpaceBattle.prototype.handleCollisions = function(){
                     this.bar2.active[i] = 0;
                     this.b1.reset();
             }
-        }
+        }*/
         /*
         if (check_collision(bonus.rectangle,b1.rectangle)) {
             b1.reset();
@@ -8248,7 +8337,7 @@ SpaceBattle.prototype.handleCollisions = function(){
     }
 
     if(this.b3.state == 1){
-        if (this.check_collision(this.ship1.rectangle,this.b3.rectangle)) {
+      /*  if (this.check_collision(this.ship1.rectangle,this.b3.rectangle)) {
             this.b3.reset();
             this.ship1.rectangle.x=0;
             //sb.addToLife1(-1);
@@ -8269,7 +8358,7 @@ SpaceBattle.prototype.handleCollisions = function(){
                     this.bar2.active[i] = 0;
                     this.b3.reset();
             }
-        }
+        }*/
 
     }
 
@@ -8278,4 +8367,4 @@ SpaceBattle.prototype.handleCollisions = function(){
 module.exports = SpaceBattle;
 
 
-},{"./barrier":49,"./bonus":50,"./bullet":51,"./fleet":52,"./ship":54}]},{},[53]);
+},{"./barrier":49,"./bonus":50,"./bullet":51,"./fleet":52,"./game_opts":53,"./ship":55}]},{},[54]);

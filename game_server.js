@@ -1,18 +1,7 @@
-(function (root, factory) {
-	if (typeof define === 'function' && define.amd) {
-		// AMD. Register as an anonymous module.
-		define('gameServer',['public/javascripts/space_battle'], factory);
-	} else if (typeof exports === 'object') {
-		// Node. Does not work with strict CommonJS, but
-		// only CommonJS-like environments that support module.exports,
-		// like Node.
-		module.exports = factory(require('./public/javascripts/space_battle'));
-	} else {
-		// Browser globals (root is window)
-		root.returnExports = factory();
-  }
-}(this, function (SpaceBattle,config) {
 
+var SpaceBattle = require('./public/javascripts/space_battle');
+
+var gameServer = (function(){
 	var gameRooms = {};
 	var pendingRooms = {};
 	var roomSocketsMap = {};
@@ -111,44 +100,34 @@
 	};
 
 
-/*
-setInterval(function(){
-  //console.log(gameRooms);
-  for (x in gameRooms) {
-    serv_io.sockets.sockets[gameRooms[x].s1].volatile.emit('state',gameRooms[x].game.getState());
-    serv_io.sockets.sockets[gameRooms[x].s2].volatile.emit('state',gameRooms[x].game.getState());
-  }
-},40);
-*/
-
 	function onPlayerConect(data){
 		var socket = this;
-	        console.log('gameId '+data.id + ' t'+Date.now());
-	        if (pendingRooms[data.id]) {
+        console.log('gameId '+data.id + ' t'+Date.now());
+        if (pendingRooms[data.id]) {
 
-	            gameRooms[data.id] =  { s1 : pendingRooms[data.id].socketId, 
-	                                    s2: socket.id,
-	                                    game : new SpaceBattle(),
-	                                    l1 : 0,
-	                                    l2: 0,
-	                                    t1: 0,
-	                                    t2: 0
-	                                  };
-	            gameRooms[data.id][pendingRooms[data.id].socketId] = 1;
-	            gameRooms[data.id][socket.id] = 2;
-	            gameRooms[data.id].game.startFleet();
+            gameRooms[data.id] =  { s1 : pendingRooms[data.id].socketId, 
+                                    s2: socket.id,
+                                    game : new SpaceBattle(),
+                                    l1 : 0,
+                                    l2: 0,
+                                    t1: 0,
+                                    t2: 0
+                                  };
+            gameRooms[data.id][pendingRooms[data.id].socketId] = 1;
+            gameRooms[data.id][socket.id] = 2;
+            gameRooms[data.id].game.startFleet();
 
-	            roomSocketsMap[pendingRooms[data.id].socketId] = data.id;
-	            roomSocketsMap[socket.id] = data.id;
+            roomSocketsMap[pendingRooms[data.id].socketId] = data.id;
+            roomSocketsMap[socket.id] = data.id;
 
-	            delete pendingRooms[data.id];
-	            //console.log(roomSocketsMap);  
-	            //console.log(gameRooms);
-	        } else {
-	            console.log('grabo socket id');
-	            console.log(socket.id);
-	            pendingRooms[data.id] = {socketId : socket.id};
-	        }
+            delete pendingRooms[data.id];
+            //console.log(roomSocketsMap);  
+            //console.log(gameRooms);
+        } else {
+            console.log('grabo socket id');
+            console.log(socket.id);
+            pendingRooms[data.id] = {socketId : socket.id};
+        }
 	};
 
 	function onPlayerMoved(data) {
@@ -212,7 +191,6 @@ setInterval(function(){
 
 	};
 
-
 	return{
 		init: init,
 		gameLoop: gameLoop,
@@ -222,7 +200,7 @@ setInterval(function(){
 		onPlayerMoved: onPlayerMoved
 	}
 
+})();
 
-
-}));
+module.exports = gameServer;
 

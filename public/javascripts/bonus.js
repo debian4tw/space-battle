@@ -1,4 +1,4 @@
-
+var GameOpts = require('./game_opts');
 //Constructor
 var Bonus = function(x,y,color){
 
@@ -15,10 +15,7 @@ var Bonus = function(x,y,color){
 };
 
 Bonus.prototype.moveX = function(x){
-		var GameOpts = {
-    screenW : 800,
-    screenH : 600
-    };
+
 	if ( (x<0 && this.rectangle.x+x < 0 ) || 
 		 (x>0 && this.rectangle.x+this.rectangle.w+x > GameOpts.screenW ) ){
 		return;

@@ -1,3 +1,4 @@
+var GameOpts = require('./game_opts');
 
 var Ship = function(x,y,color){
 
@@ -9,10 +10,7 @@ var Ship = function(x,y,color){
 };
 
 Ship.prototype.moveX = function(x){
-		var GameOpts = {
-    screenW : 800,
-    screenH : 600
-    };
+
 	if ( (x<0 && this.rectangle.x+x < 0 ) || 
 		 (x>0 && this.rectangle.x+this.rectangle.w+x > GameOpts.screenW ) ){
 		return;
