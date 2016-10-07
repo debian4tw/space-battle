@@ -1,21 +1,3 @@
-(function (root, factory) {
-	if (typeof define === 'function' && define.amd) {
-		// AMD. Register as an anonymous module.
-		define('fleet',[], factory);
-	} else if (typeof exports === 'object') {
-		// Node. Does not work with strict CommonJS, but
-		// only CommonJS-like environments that support module.exports,
-		// like Node.
-		module.exports = factory();
-	} else {
-		// Browser globals (root is window)
-		root.returnExports = factory();
-  }
-}(this, function () {
-
-	// Just return a value to define the module export.
-	// This example returns an object, but the module
-	// can return a function as the exported value.
 	
 //Constructor
 var Fleet = function(x,y,color){
@@ -172,12 +154,4 @@ Fleet.prototype.setState = function(data){
 
 }
 
-return Fleet;
-}));
-
-//define('Fleet',function(){
-
-
-//	return Fleet;
-
-//});
+module.exports = Fleet;

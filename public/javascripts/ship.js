@@ -1,28 +1,5 @@
-(function (root, factory) {
-    if (typeof define === 'function' && define.amd) {
-        // AMD. Register as an anonymous module.
-        define('ship',[], factory);
-    } else if (typeof exports === 'object') {
-        // Node. Does not work with strict CommonJS, but
-        // only CommonJS-like environments that support module.exports,
-        // like Node.
-        module.exports = factory();
-    } else {
-        // Browser globals (root is window)
-        root.returnExports = factory();
-  }
-}(this, function () {
 
-    // Just return a value to define the module export.
-    // This example returns an object, but the module
-    // can return a function as the exported value.
-    
-//Constructor
 var Ship = function(x,y,color){
-
-
-	//this.canvas = document.getElementById("canvas");
-    //this.ctx = canvas.getContext("2d");
 
 	this.rectangle = {x:x,y:y,w:60,h:40};
 	this.speed = 20;
@@ -93,6 +70,5 @@ Ship.prototype.setState = function(data) {
 	this.rectangle.y = data.y
 }
 
-return Ship;
-}));
+module.exports = Ship;
 

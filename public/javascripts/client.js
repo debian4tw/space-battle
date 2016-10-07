@@ -7243,25 +7243,7 @@ function toArray(list, index) {
 }
 
 },{}],49:[function(require,module,exports){
-(function (root, factory) {
-	if (typeof define === 'function' && define.amd) {
-		// AMD. Register as an anonymous module.
-		define('barrier',[], factory);
-	} else if (typeof exports === 'object') {
-		// Node. Does not work with strict CommonJS, but
-		// only CommonJS-like environments that support module.exports,
-		// like Node.
-		module.exports = factory();
-	} else {
-		// Browser globals (root is window)
-		root.returnExports = factory();
-  }
-}(this, function () {
 
-	// Just return a value to define the module export.
-	// This example returns an object, but the module
-	// can return a function as the exported value.
-	
 //Constructor
 var Barrier = function(x,y,color,reverseOrientation){
 
@@ -7376,35 +7358,10 @@ Barrier.prototype.setState = function(data){
 	this.active = data.active;
 }
 
-return Barrier;
-}));
+module.exports = Barrier;
 
-//define('Barrier',function(){
-
-
-//	return Barrier;
-
-//});
 },{}],50:[function(require,module,exports){
-(function (root, factory) {
-    if (typeof define === 'function' && define.amd) {
-        // AMD. Register as an anonymous module.
-        define('bonus',[], factory);
-    } else if (typeof exports === 'object') {
-        // Node. Does not work with strict CommonJS, but
-        // only CommonJS-like environments that support module.exports,
-        // like Node.
-        module.exports = factory();
-    } else {
-        // Browser globals (root is window)
-        root.returnExports = factory();
-  }
-}(this, function () {
 
-    // Just return a value to define the module export.
-    // This example returns an object, but the module
-    // can return a function as the exported value.
-    
 //Constructor
 var Bonus = function(x,y,color){
 
@@ -7482,25 +7439,10 @@ Bonus.prototype.setState = function(data){
 	this.rectangle.y = data.y
 }
 
-return Bonus;
-}));
+module.exports = Bonus;
+
 
 },{}],51:[function(require,module,exports){
-(function (root, factory) {
-    if (typeof define === 'function' && define.amd) {
-        // AMD. Register as an anonymous module.
-        define('bullet',[], factory);
-    } else if (typeof exports === 'object') {
-        // Node. Does not work with strict CommonJS, but
-        // only CommonJS-like environments that support module.exports,
-        // like Node.
-        module.exports = factory();
-    } else {
-        // Browser globals (root is window)
-        root.returnExports = factory();
-  }
-}(this, function () {
-
 
 //Constructor
 var Bullet = function(x,y,color){
@@ -7602,28 +7544,10 @@ Bullet.prototype.setState = function(data){
 }
 
 
-	return Bullet;
-}));
+module.exports = Bullet;
+
 
 },{}],52:[function(require,module,exports){
-(function (root, factory) {
-	if (typeof define === 'function' && define.amd) {
-		// AMD. Register as an anonymous module.
-		define('fleet',[], factory);
-	} else if (typeof exports === 'object') {
-		// Node. Does not work with strict CommonJS, but
-		// only CommonJS-like environments that support module.exports,
-		// like Node.
-		module.exports = factory();
-	} else {
-		// Browser globals (root is window)
-		root.returnExports = factory();
-  }
-}(this, function () {
-
-	// Just return a value to define the module export.
-	// This example returns an object, but the module
-	// can return a function as the exported value.
 	
 //Constructor
 var Fleet = function(x,y,color){
@@ -7780,15 +7704,8 @@ Fleet.prototype.setState = function(data){
 
 }
 
-return Fleet;
-}));
+module.exports = Fleet;
 
-//define('Fleet',function(){
-
-
-//	return Fleet;
-
-//});
 },{}],53:[function(require,module,exports){
 var SpaceBattle = require('./space_battle');
 var io = require('socket.io-client');
@@ -7893,31 +7810,8 @@ var io = require('socket.io-client');
 	});*/
 
 },{"./space_battle":55,"socket.io-client":2}],54:[function(require,module,exports){
-(function (root, factory) {
-    if (typeof define === 'function' && define.amd) {
-        // AMD. Register as an anonymous module.
-        define('ship',[], factory);
-    } else if (typeof exports === 'object') {
-        // Node. Does not work with strict CommonJS, but
-        // only CommonJS-like environments that support module.exports,
-        // like Node.
-        module.exports = factory();
-    } else {
-        // Browser globals (root is window)
-        root.returnExports = factory();
-  }
-}(this, function () {
 
-    // Just return a value to define the module export.
-    // This example returns an object, but the module
-    // can return a function as the exported value.
-    
-//Constructor
 var Ship = function(x,y,color){
-
-
-	//this.canvas = document.getElementById("canvas");
-    //this.ctx = canvas.getContext("2d");
 
 	this.rectangle = {x:x,y:y,w:60,h:40};
 	this.speed = 20;
@@ -7988,26 +7882,17 @@ Ship.prototype.setState = function(data) {
 	this.rectangle.y = data.y
 }
 
-return Ship;
-}));
+module.exports = Ship;
 
 
 },{}],55:[function(require,module,exports){
-(function (root, factory) {
-    if (typeof define === 'function' && define.amd) {
-        // AMD. Register as an anonymous module.
-        define('space_battle',['ship','bullet','fleet','barrier','bonus'], factory);
-    } else if (typeof exports === 'object') {
-        // Node. Does not work with strict CommonJS, but
-        // only CommonJS-like environments that support module.exports,
-        // like Node.
-        module.exports = factory(require('./ship'), require('./bullet'), require('./fleet'), require('./barrier'), require('./bonus'));
-    } else {
-        // Browser globals (root is window)
-        root.returnExports = factory(root.Ship);
-    }
-}(this, function (Ship,Bullet,Fleet,Barrier,Bonus) {
-   
+
+var Ship = require('./ship');
+var Bullet = require('./bullet');
+var Fleet = require('./fleet');
+var Barrier = require('./barrier');
+var Bonus = require('./bonus');
+
 
 var SpaceBattle = function(sock){
 
@@ -8390,7 +8275,7 @@ SpaceBattle.prototype.handleCollisions = function(){
 
 };
 
-return SpaceBattle;
-}));
+module.exports = SpaceBattle;
+
 
 },{"./barrier":49,"./bonus":50,"./bullet":51,"./fleet":52,"./ship":54}]},{},[53]);

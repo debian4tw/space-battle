@@ -1,22 +1,4 @@
-(function (root, factory) {
-	if (typeof define === 'function' && define.amd) {
-		// AMD. Register as an anonymous module.
-		define('barrier',[], factory);
-	} else if (typeof exports === 'object') {
-		// Node. Does not work with strict CommonJS, but
-		// only CommonJS-like environments that support module.exports,
-		// like Node.
-		module.exports = factory();
-	} else {
-		// Browser globals (root is window)
-		root.returnExports = factory();
-  }
-}(this, function () {
 
-	// Just return a value to define the module export.
-	// This example returns an object, but the module
-	// can return a function as the exported value.
-	
 //Constructor
 var Barrier = function(x,y,color,reverseOrientation){
 
@@ -131,12 +113,4 @@ Barrier.prototype.setState = function(data){
 	this.active = data.active;
 }
 
-return Barrier;
-}));
-
-//define('Barrier',function(){
-
-
-//	return Barrier;
-
-//});
+module.exports = Barrier;
