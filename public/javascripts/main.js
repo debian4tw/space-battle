@@ -1,5 +1,7 @@
-require(["space_battle",'../socket.io/socket.io'], function(SpaceBattle,io) {
-  	//var socket = io.connect('http://'+window.location.host);
+var SpaceBattle = require('./space_battle');
+var io = require('socket.io-client');
+
+
   	var fpsContainer = $('#fps');
 	var limitLoop = function (fn, fps) {
 	 
@@ -38,9 +40,11 @@ require(["space_battle",'../socket.io/socket.io'], function(SpaceBattle,io) {
 
 
 	var adress = config.server;
-	var socket = io.connect(adress);
+	socket = io.connect(adress);
+	console.log('conecting to '+adress);
   	//var socket = io.connect('http://localhost:3000');
-  	//var socket = io.connect('http://108.59.6.220:10834');  	
+  	//var socket = io.connect('http://108.59.6.220:10834');  
+  	console.log(socket);	
 	var canvas = document.getElementById("canvas");
   	var ctx = canvas.getContext("2d");
 
@@ -70,7 +74,7 @@ require(["space_battle",'../socket.io/socket.io'], function(SpaceBattle,io) {
 	var latencyContainer = $('#latency');
 	
 	socket.on('state',function(data){
-		//console.log(data);
+		console.log(data);
 		//console.log(data.last);
 		game.setState(data.s);
 		if(game.commands[data.last]){
@@ -95,4 +99,3 @@ require(["space_battle",'../socket.io/socket.io'], function(SpaceBattle,io) {
 		game.ship2.fire();
 		game.getState();
 	});*/
-});

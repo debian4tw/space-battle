@@ -8,37 +8,20 @@ var http = require('http');
 var path = require('path');
 var io = require('socket.io');
 var app = express();
-var server;
-var serv_io;
-
 var config = require('./config');
 var gameServer = require('./game_server');
 
+var server;
+var serv_io;
+
 
 initAppServer();
-
 gameServer.init(serv_io);
 
 
 app.get('/', routes.index);
 app.get('/game', routes.game);
 
-
-serv_io.sockets.on('connection', function (socket) {
-  //socket.emit('news', { hello: 'world' });
-  console.log('conected');
-    socket.on('gameId', gameServer.onPlayerConect);
-
-    socket.on('moved', gameServer.onPlayerMoved);
-
-    socket.on('fired', gameServer.onPlayerFired);
-
-    socket.on('disconnect', function() {
-        //console.log('Disconnect!');
-        gameServer.onPlayerDisconect(socket);
-    });   
-
-});
 
 
 function initAppServer(){
@@ -49,7 +32,6 @@ function initAppServer(){
 
   app.engine('handlebars', exphbs({defaultLayout: 'main'}));  
   app.set('view engine', 'handlebars');
-
 
   app.use(express.favicon());
   app.use(express.logger('dev'));

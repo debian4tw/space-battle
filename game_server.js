@@ -36,7 +36,6 @@
 	    if (previousTick + tickLengthMs <= now) {
 	        var delta = (now - previousTick) / 1000
 	        
-
 	        previousTick = now;
 
 	        update(delta);
@@ -48,22 +47,32 @@
 	        setTimeout(gameLoop);
 	    } else {
 	        setImmediate(gameLoop);
-
 	    }
 	};
 
 
 	function init(p_serv_io){
 		serv_io = p_serv_io;
-		//console.log(serv_io);
+
 		gameLoop();
+
+		serv_io.on('connection', function (socket) {
+
+		    socket.on('gameId', onPlayerConect);
+
+		    socket.on('moved', onPlayerMoved);
+
+		    socket.on('fired', onPlayerFired);
+
+		    socket.on('disconnect', function() {
+		        //console.log('Disconnect!');
+		        onPlayerDisconect(socket);
+		    });   
+
+		});		
 	};
 
-	/**
-	Update is normally where all of the logic would go. In this case we simply call
-	a function that takes 10 milliseconds to complete thus simulating that our game
-	had a very busy time.
-	*/
+
 	function update(delta) {
 
 	    var state1;
