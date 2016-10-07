@@ -8,7 +8,7 @@ It is composed of:
 * A dumb client which just takes sends commands to the server/receives the game state via socket.io and renders the game with canvas.
 
 
-
+![Screenshot](https://github.com/debian4tw/space-battle/public/images/screenshot.png "Screenshot")
 
 
  
